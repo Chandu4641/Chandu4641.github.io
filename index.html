@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Palnati Chandu Prakash | Cybersecurity Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- React + ReactDOM -->
+    <script
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+      crossorigin
+    ></script>
+
+    <!-- Babel so we can write JSX directly in this file -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useEffect } = React;
+
+      const sections = [
+        { id: "about", label: "About" },
+        { id: "skills", label: "Skills" },
+        { id: "experience", label: "Experience" },
+        { id: "projects", label: "Projects" },
+        { id: "contact", label: "Contact" },
+      ];
+
+      function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      function Navbar() {
+        return (
+          <header className="nav">
+            <div className="nav-left">
+              <div className="logo">P C P</div>
+              <span className="nav-title">Palnati Chandu Prakash</span>
+            </div>
+            <nav className="nav-links">
+              {sections.map((s) => (
+                <button key={s.id} onClick={() => scrollToSection(s.id)}>
+                  {s.label}
+                </button>
+              ))}
+            </nav>
+          </header>
+        );
+      }
+
+      function Hero() {
+        return (
+          <section id="hero" className="hero">
+            <div className="hero-overlay" />
+            <div className="hero-content">
+              <p className="hero-tag">Cybersecurity • AppSec • SOC</p>
+              <h1>
+                Cybersecurity Professional
+                <span> & Application Security Analyst</span>
+              </h1>
+              <p className="hero-subtitle">
+                I secure web applications, APIs and endpoints by integrating
+                security into DevOps pipelines, performing VAPT, and supporting
+                SOC operations to reduce risk and strengthen organizational
+                security posture.
+              </p>
+              <div className="hero-actions">
+                <a
+                  href="#projects"
+                  className="btn btn-primary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("projects");
+                  }}
+                >
+                  View My Work
+                </a>
+                <a
+                  href="Prakash_Cyber_Security.pdf"
+                  className="btn btn-ghost"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download Resume (PDF)
+                </a>
+              </div>
+              <div className="hero-meta">
+                <span>📍 Vizag, India</span>
+                <span>🔐 Application Security • VAPT • SOC</span>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Section({ id, title, children }) {
+        return (
+          <section id={id} className="section">
+            <div className="section-header">
+              <h2>{title}</h2>
+              <div className="section-accent" />
+            </div>
+            {children}
+          </section>
+        );
+      }
+
+      function About() {
+        return (
+          <Section id="about" title="About Me">
+            <p className="about-text">
+              I&apos;m <strong>Palnati Chandu Prakash</strong>, a Cybersecurity
+              Professional and Application Security Analyst with experience in
+              <strong> Web & API security testing, DevSecOps, SOC operations</strong>
+              and <strong>Endpoint Protection</strong>. I enjoy breaking
+              applications ethically to help teams fix vulnerabilities before
+              attackers can exploit them.
+            </p>
+            <p className="about-text">
+              I&apos;ve worked on web application VAPT, API security testing using
+              tools like Burp Suite, Postman and SoapUI, automated security
+              checks in CI/CD pipelines, and supported SOC monitoring using SIEM
+              and EDR solutions such as Bitdefender. I actively participate in
+              bug bounty programs and vulnerability disclosure programs to keep
+              my skills sharp.
+            </p>
+          </Section>
+        );
+      }
+
+      function Skills() {
+        return (
+          <Section id="skills" title="Skills & Tools">
+            <div className="skills-grid">
+              <div className="skill-card">
+                <h3>Security Skills</h3>
+                <ul>
+                  <li>Web Application VAPT</li>
+                  <li>API Security Testing (REST & SOAP)</li>
+                  <li>OWASP Top 10</li>
+                  <li>SOC Operations &amp; SIEM Monitoring</li>
+                  <li>Endpoint Detection &amp; Response (EDR)</li>
+                  <li>QA &amp; Functional Security Testing</li>
+                </ul>
+              </div>
+              <div className="skill-card">
+                <h3>Tools &amp; Technologies</h3>
+                <ul>
+                  <li>Burp Suite, Postman, SoapUI</li>
+                  <li>Nmap, Nessus, Metasploit, Wireshark</li>
+                  <li>Bitdefender EDR, Snort, Fortinet</li>
+                  <li>Caldera, BEeF</li>
+                  <li>HTML5, Computer Networks</li>
+                </ul>
+              </div>
+              <div className="skill-card">
+                <h3>Programming &amp; Soft Skills</h3>
+                <ul>
+                  <li>Java &amp; Python</li>
+                  <li>Secure Coding Mindset</li>
+                  <li>Problem Solving &amp; Analysis</li>
+                  <li>Articulate Communication</li>
+                  <li>Assertive Decision-Making</li>
+                  <li>Team Collaboration</li>
+                </ul>
+              </div>
+            </div>
+          </Section>
+        );
+      }
+
+      function Experience() {
+        return (
+          <Section id="experience" title="Experience & Education">
+            <div className="timeline">
+              <div className="timeline-item">
+                <h3>Application Security Analyst</h3>
+                <h4>Yalamanchili Solution for Payments — Vizag, India</h4>
+                <p className="timeline-date">Jul 2024 – Present</p>
+                <ul>
+                  <li>
+                    Led security assessments for 10+ client-facing web
+                    applications, identifying critical issues like SQLi, XSS and
+                    CSRF and reducing critical vulnerabilities by ~33% through
+                    collaboration with developers.
+                  </li>
+                  <li>
+                    Performed manual and automated API security testing using
+                    Burp Suite and Postman, helping resolve multiple critical
+                    vulnerabilities.
+                  </li>
+                  <li>
+                    Integrated SAST &amp; DAST security scans into CI/CD
+                    pipelines to automate vulnerability detection and
+                    remediation.
+                  </li>
+                  <li>
+                    Supported SOC operations as L1 Analyst using SIEM and
+                    strengthened endpoint protection with Bitdefender EDR.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="timeline-item">
+                <h3>Cybersecurity Intern</h3>
+                <h4>Cyber Sapiens — Mangalore, India</h4>
+                <p className="timeline-date">Jul 2022 – Dec 2022</p>
+                <ul>
+                  <li>
+                    Performed web and network VAPT aligned with OWASP Top 10 and
+                    industry standards.
+                  </li>
+                  <li>
+                    Used Burp Suite, Nessus and Nmap to discover, prioritize and
+                    document vulnerabilities.
+                  </li>
+                  <li>
+                    Assisted with remediation and collaborated with threat
+                    intelligence teams to respond to emerging threats.
+                  </li>
+                  <li>
+                    Monitored and investigated security incidents using SIEM.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="timeline-item">
+                <h3>Freelance Bug Bounty Hunter</h3>
+                <h4>Various Platforms</h4>
+                <p className="timeline-date">Ongoing</p>
+                <ul>
+                  <li>
+                    Reported vulnerabilities in platforms such as Exirio,
+                    MyDukaan, Chain Analysis, Tinder and Sectona.
+                  </li>
+                  <li>
+                    Participated in multiple Vulnerability Disclosure Programs
+                    (VDPs), improving platform security.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="timeline-item">
+                <h3>B.Tech in Cyber Security (CGPA 7.16)</h3>
+                <h4>
+                  Kakinada Institute of Engineering &amp; Technology — Kakinada
+                </h4>
+                <p className="timeline-date">Graduated May 2024</p>
+                <ul>
+                  <li>Strong foundation in cybersecurity concepts & networks.</li>
+                </ul>
+              </div>
+            </div>
+          </Section>
+        );
+      }
+
+      function Projects() {
+        return (
+          <Section id="projects" title="Highlighted Work">
+            <div className="projects-grid">
+              <article className="project-card">
+                <h3>Password Manager with Encryption</h3>
+                <p>
+                  A secure web application for generating and storing strong
+                  passwords with an integrated strength tester and encrypted
+                  storage.
+                </p>
+                <ul className="project-details">
+                  <li>Implemented SHA-512 based encryption for storage.</li>
+                  <li>Built password strength evaluation for users.</li>
+                  <li>
+                    Used <strong>Python</strong> for application logic and{" "}
+                    <strong>MySQL</strong> for database management.
+                  </li>
+                </ul>
+                <div className="project-tags">
+                  <span>Python</span>
+                  <span>MySQL</span>
+                  <span>Web Security</span>
+                </div>
+              </article>
+
+              <article className="project-card">
+                <h3>Bug Bounty &amp; VDP Findings</h3>
+                <p>
+                  A collection of responsibly disclosed vulnerabilities from bug
+                  bounty and VDP programs, focusing on web and API security.
+                </p>
+                <ul className="project-details">
+                  <li>Improved platform security by up to ~40% through reports.</li>
+                  <li>
+                    Focus on authentication, authorization, input validation and
+                    business logic flaws.
+                  </li>
+                  <li>Consistent practice of responsible disclosure.</li>
+                </ul>
+                <div className="project-tags">
+                  <span>Bug Bounty</span>
+                  <span>OWASP Top 10</span>
+                  <span>Responsible Disclosure</span>
+                </div>
+              </article>
+            </div>
+          </Section>
+        );
+      }
+
+      function Contact() {
+        return (
+          <Section id="contact" title="Contact">
+            <div className="contact-grid">
+              <div>
+                <p>
+                  I&apos;m open to roles in{" "}
+                  <strong>Application Security, VAPT, SOC and Cybersecurity</strong>.
+                  If my profile matches what you&apos;re looking for, feel free to
+                  reach out.
+                </p>
+                <div className="contact-main">
+                  <span className="contact-label">Email</span>
+                  <a href="mailto:chanduprakashpalnati903@gmail.com">
+                    chanduprakashpalnati903@gmail.com
+                  </a>
+                </div>
+                <div className="contact-links">
+                  <a
+                    href="https://github.com/Chandu4641"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/palnati-chandu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </div>
+              <div className="contact-note">
+                <p>
+                  <span>Next step:</span> Let&apos;s connect to discuss how I can
+                  help secure your applications and infrastructure.
+                </p>
+              </div>
+            </div>
+          </Section>
+        );
+      }
+
+      function Footer() {
+        return (
+          <footer className="footer">
+            <p>
+              © {new Date().getFullYear()} Palnati Chandu Prakash · Crafted with
+              React &amp; passion for security.
+            </p>
+          </footer>
+        );
+      }
+
+      function App() {
+        useEffect(() => {
+          document.title =
+            "Palnati Chandu Prakash | Cybersecurity & Application Security";
+        }, []);
+
+        return (
+          <div className="app">
+            <Navbar />
+            <main>
+              <Hero />
+              <About />
+              <Skills />
+              <Experience />
+              <Projects />
+              <Contact />
+            </main>
+            <Footer />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
