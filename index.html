@@ -1,403 +1,863 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Palnati Chandu Prakash | Cybersecurity Portfolio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="UTF-8" />
+  <title>Palnati Chandu Prakash | Cybersecurity Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- React + Babel (no build tools needed) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-elevated: #020617;
+      --card: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --accent-2: #a855f7;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --radius-lg: 1.5rem;
+      --radius-md: 1rem;
+      --shadow-soft: 0 30px 80px rgba(15, 23, 42, 0.9);
+      --shadow-card: 0 20px 40px rgba(15, 23, 42, 0.8);
+    }
 
-    <!-- React + ReactDOM -->
-    <script
-      src="https://unpkg.com/react@18/umd/react.production.min.js"
-      crossorigin
-    ></script>
-    <script
-      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
-      crossorigin
-    ></script>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    <!-- Babel so we can write JSX directly in this file -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000 100%);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    <script type="text/babel">
-      const { useEffect } = React;
+    /* Layout helpers */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-      const sections = [
-        { id: "about", label: "About" },
-        { id: "skills", label: "Skills" },
-        { id: "experience", label: "Experience" },
-        { id: "projects", label: "Projects" },
-        { id: "contact", label: "Contact" },
-      ];
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.25rem 1.25rem 4rem;
+    }
 
-      function scrollToSection(id) {
-        const el = document.getElementById(id);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+    section {
+      scroll-margin-top: 88px;
+    }
+
+    /* NAVBAR */
+    .nav-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.86),
+        rgba(15, 23, 42, 0.0)
+      );
+      border-bottom: 1px solid rgba(30, 64, 175, 0.4);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0.8rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    .logo-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #e0f2fe, #38bdf8, #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.7);
+      flex-shrink: 0;
+    }
+
+    .logo-circle span {
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 1rem;
+    }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .nav-name {
+      font-size: 0.98rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-role {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 0.15rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent),
+                  rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-decoration: none;
+      box-shadow: 0 0 25px rgba(15, 23, 42, 0.9);
+    }
+
+    .nav-cta span {
+      font-size: 1rem;
+    }
+
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 1.4rem;
+    }
+
+    /* HERO */
+    .hero {
+      padding-top: 2.4rem;
+      padding-bottom: 3rem;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .badge-row {
+      display: inline-flex;
+      gap: 0.4rem;
+      padding: 0.3rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      margin-bottom: 1.2rem;
+      box-shadow: 0 0 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.2), rgba(15, 23, 42, 1));
+      font-size: 0.75rem;
+      color: var(--text);
+    }
+
+    .badge-pill span {
+      font-size: 0.55rem;
+      color: var(--accent);
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 5vw, 2.9rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.7rem;
+    }
+
+    .hero-title span {
+      display: block;
+      background: linear-gradient(120deg, #e0f2fe, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 35px rgba(56, 189, 248, 0.75);
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: #cbd5f5;
+      margin-bottom: 1.2rem;
+      max-width: 36rem;
+    }
+
+    .hero-meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.7rem;
+      max-width: 34rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at top left, #e0f2fe, #38bdf8);
+      color: #0f172a;
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 1);
+      font-weight: 600;
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.7);
+      color: var(--text);
+    }
+
+    .btn-icon {
+      font-size: 1.1rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 40px rgba(15, 23, 42, 1);
+    }
+
+    .hero-footer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .hero-footer-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 1);
+    }
+
+    /* Hero Right */
+    .hero-right {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .holo-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 260px;
+      border-radius: 2rem;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18), transparent 60%),
+                  radial-gradient(circle at bottom, rgba(168, 85, 247, 0.22), transparent 60%),
+                  rgba(15, 23, 42, 0.98);
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: var(--shadow-soft);
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .holo-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.7rem;
+    }
+
+    .tag-chip {
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .signal-dots {
+      display: flex;
+      gap: 0.3rem;
+    }
+
+    .signal-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.6);
+    }
+
+    .signal-dots span:nth-child(3) {
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    .metric-card {
+      padding: 0.7rem 0.75rem;
+      border-radius: 0.9rem;
+      background: rgba(15, 23, 42, 0.97);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.15rem;
+    }
+
+    .metric-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, #e0f2fe, #38bdf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .glow-orb {
+      position: absolute;
+      right: -40px;
+      top: 20%;
+      width: 160px;
+      height: 160px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.7), transparent 60%);
+      filter: blur(2px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* SECTION COMMON */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 1.2rem;
+      gap: 0.8rem;
+    }
+
+    .section-kicker {
+      font-size: 0.78rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .section-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 24rem;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+      gap: 2rem;
+      margin-bottom: 2.4rem;
+    }
+
+    .about-card {
+      padding: 1.2rem 1.3rem;
+      border-radius: var(--radius-lg);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      font-size: 0.95rem;
+    }
+
+    .about-card p + p {
+      margin-top: 0.8rem;
+    }
+
+    .about-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .about-meta-item {
+      padding: 0.8rem 0.9rem;
+      border-radius: 1rem;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(30, 64, 175, 0.7);
+      font-size: 0.85rem;
+    }
+
+    .about-meta-item strong {
+      display: block;
+      color: #e5e7eb;
+      margin-bottom: 0.2rem;
+      font-size: 0.87rem;
+    }
+
+    .about-meta-item span {
+      color: var(--muted);
+    }
+
+    /* Skills */
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .pill {
+      padding: 0.32rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.78rem;
+      color: #cbd5f5;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.4rem;
+    }
+
+    .skills-card {
+      padding: 1rem 1.05rem;
+      border-radius: 1.1rem;
+      background: rgba(15, 23, 42, 0.97);
+      border: 1px solid rgba(30, 64, 175, 0.8);
+      box-shadow: var(--shadow-card);
+      font-size: 0.87rem;
+    }
+
+    .skills-card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.55rem;
+    }
+
+    /* Experience */
+    .timeline {
+      display: grid;
+      gap: 0.9rem;
+      margin-bottom: 2.6rem;
+    }
+
+    .timeline-item {
+      padding: 1rem 1.05rem;
+      border-radius: 1.1rem;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.96);
+      box-shadow: var(--shadow-card);
+      font-size: 0.87rem;
+    }
+
+    .timeline-headline {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .timeline-role {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .timeline-company {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .timeline-date {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .timeline-tags {
+      margin: 0.35rem 0 0.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .timeline ul {
+      margin-left: 1.1rem;
+    }
+
+    .timeline li + li {
+      margin-top: 0.25rem;
+    }
+
+    /* Projects */
+    .cards-2col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.6rem;
+    }
+
+    .project-card {
+      padding: 1rem 1.05rem 1rem;
+      border-radius: 1.1rem;
+      border: 1px solid rgba(30, 64, 175, 0.8);
+      background: rgba(15, 23, 42, 0.96);
+      box-shadow: var(--shadow-card);
+      font-size: 0.87rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-tagline {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .project-card h3 {
+      margin-bottom: 0.35rem;
+      font-size: 1rem;
+    }
+
+    .project-tech {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin: 0.35rem 0 0.45rem;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+    }
+
+    .project-links a {
+      font-size: 0.8rem;
+      text-decoration: none;
+      color: var(--accent);
+    }
+
+    /* Contact */
+    .contact-card {
+      padding: 1.2rem 1.3rem;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, var(--accent-soft), transparent),
+                  rgba(15, 23, 42, 0.97);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow: var(--shadow-soft);
+      font-size: 0.9rem;
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin: 1rem 0 0.2rem;
+    }
+
+    .contact-line {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .contact-line a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(15, 23, 42, 1);
+      padding: 1.1rem 1.25rem 1.6rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+      background: #020617;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .container {
+        padding-inline: 1.1rem;
       }
 
-      function Navbar() {
-        return (
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-right {
+        order: -1;
+      }
+
+      .about-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .skills-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .cards-2col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links.mobile-open {
+        position: absolute;
+        inset-inline: 0;
+        top: 56px;
+        margin-inline: auto;
+        max-width: 1120px;
+        padding: 0.6rem 1.25rem 0.9rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        background: rgba(15, 23, 42, 0.99);
+        border-bottom: 1px solid rgba(30, 64, 175, 0.8);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .skills-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding-top: 1.8rem;
+      }
+
+      .holo-card {
+        min-height: 230px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="page"></div>
+
+  <script type="text/babel">
+    const scrollToId = (id) => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    const NavBar = () => {
+      const [open, setOpen] = React.useState(false);
+
+      const handleNavClick = (id) => {
+        setOpen(false);
+        scrollToId(id);
+      };
+
+      return (
+        <div className="nav-wrapper">
           <header className="nav">
             <div className="nav-left">
-              <div className="logo">P C P</div>
-              <span className="nav-title">Palnati Chandu Prakash</span>
+              <div className="logo-circle">
+                <span>PC</span>
+              </div>
+              <div className="nav-title">
+                <div className="nav-name">Palnati Chandu Prakash</div>
+                <div className="nav-role">Cybersecurity • AppSec • SOC</div>
+              </div>
             </div>
-            <nav className="nav-links">
-              {sections.map((s) => (
-                <button key={s.id} onClick={() => scrollToSection(s.id)}>
-                  {s.label}
-                </button>
-              ))}
+
+            <nav>
+              <button
+                className="nav-toggle"
+                onClick={() => setOpen((x) => !x)}
+                aria-label="Toggle navigation"
+              >
+                ☰
+              </button>
+              <div className={"nav-links" + (open ? " mobile-open" : "")}>
+                <a
+                  className="nav-link"
+                  onClick={() => handleNavClick("about")}
+                >
+                  About
+                </a>
+                <a
+                  className="nav-link"
+                  onClick={() => handleNavClick("skills")}
+                >
+                  Skills
+                </a>
+                <a
+                  className="nav-link"
+                  onClick={() => handleNavClick("experience")}
+                >
+                  Experience
+                </a>
+                <a
+                  className="nav-link"
+                  onClick={() => handleNavClick("projects")}
+                >
+                  Projects
+                </a>
+                <a
+                  className="nav-link"
+                  onClick={() => handleNavClick("contact")}
+                >
+                  Contact
+                </a>
+                <a
+                  className="nav-cta"
+                  href="Prakash_Cyber_Security.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>⬇</span> Resume (PDF)
+                </a>
+              </div>
             </nav>
           </header>
-        );
-      }
+        </div>
+      );
+    };
 
-      function Hero() {
-        return (
-          <section id="hero" className="hero">
-            <div className="hero-overlay" />
-            <div className="hero-content">
-              <p className="hero-tag">Cybersecurity • AppSec • SOC</p>
-              <h1>
+    const Hero = () => {
+      return (
+        <section className="hero" id="top">
+          <div className="container hero-inner">
+            <div>
+              <div className="badge-row">
+                <span className="badge-pill">
+                  <span>●</span> Cybersecurity
+                </span>
+                <span className="badge-pill">
+                  <span>●</span> Application Security
+                </span>
+                <span className="badge-pill">
+                  <span>●</span> SOC Operations
+                </span>
+              </div>
+              <h1 className="hero-title">
                 Cybersecurity Professional
-                <span> & Application Security Analyst</span>
+                <span>& Application Security Analyst</span>
               </h1>
               <p className="hero-subtitle">
-                I secure web applications, APIs and endpoints by integrating
-                security into DevOps pipelines, performing VAPT, and supporting
-                SOC operations to reduce risk and strengthen organizational
-                security posture.
+                I secure web applications, APIs and endpoints by weaving
+                security into DevOps pipelines, performing VAPT, and responding
+                to threats in SOC environments.
               </p>
-              <div className="hero-actions">
-                <a
-                  href="#projects"
-                  className="btn btn-primary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("projects");
-                  }}
-                >
-                  View My Work
-                </a>
-                <a
-                  href="Prakash_Cyber_Security.pdf"
-                  className="btn btn-ghost"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download Resume (PDF)
-                </a>
-              </div>
-              <div className="hero-meta">
-                <span>📍 Vizag, India</span>
-                <span>🔐 Application Security • VAPT • SOC</span>
-              </div>
-            </div>
-          </section>
-        );
-      }
-
-      function Section({ id, title, children }) {
-        return (
-          <section id={id} className="section">
-            <div className="section-header">
-              <h2>{title}</h2>
-              <div className="section-accent" />
-            </div>
-            {children}
-          </section>
-        );
-      }
-
-      function About() {
-        return (
-          <Section id="about" title="About Me">
-            <p className="about-text">
-              I&apos;m <strong>Palnati Chandu Prakash</strong>, a Cybersecurity
-              Professional and Application Security Analyst with experience in
-              <strong> Web & API security testing, DevSecOps, SOC operations</strong>
-              and <strong>Endpoint Protection</strong>. I enjoy breaking
-              applications ethically to help teams fix vulnerabilities before
-              attackers can exploit them.
-            </p>
-            <p className="about-text">
-              I&apos;ve worked on web application VAPT, API security testing using
-              tools like Burp Suite, Postman and SoapUI, automated security
-              checks in CI/CD pipelines, and supported SOC monitoring using SIEM
-              and EDR solutions such as Bitdefender. I actively participate in
-              bug bounty programs and vulnerability disclosure programs to keep
-              my skills sharp.
-            </p>
-          </Section>
-        );
-      }
-
-      function Skills() {
-        return (
-          <Section id="skills" title="Skills & Tools">
-            <div className="skills-grid">
-              <div className="skill-card">
-                <h3>Security Skills</h3>
-                <ul>
-                  <li>Web Application VAPT</li>
-                  <li>API Security Testing (REST & SOAP)</li>
-                  <li>OWASP Top 10</li>
-                  <li>SOC Operations &amp; SIEM Monitoring</li>
-                  <li>Endpoint Detection &amp; Response (EDR)</li>
-                  <li>QA &amp; Functional Security Testing</li>
-                </ul>
-              </div>
-              <div className="skill-card">
-                <h3>Tools &amp; Technologies</h3>
-                <ul>
-                  <li>Burp Suite, Postman, SoapUI</li>
-                  <li>Nmap, Nessus, Metasploit, Wireshark</li>
-                  <li>Bitdefender EDR, Snort, Fortinet</li>
-                  <li>Caldera, BEeF</li>
-                  <li>HTML5, Computer Networks</li>
-                </ul>
-              </div>
-              <div className="skill-card">
-                <h3>Programming &amp; Soft Skills</h3>
-                <ul>
-                  <li>Java &amp; Python</li>
-                  <li>Secure Coding Mindset</li>
-                  <li>Problem Solving &amp; Analysis</li>
-                  <li>Articulate Communication</li>
-                  <li>Assertive Decision-Making</li>
-                  <li>Team Collaboration</li>
-                </ul>
-              </div>
-            </div>
-          </Section>
-        );
-      }
-
-      function Experience() {
-        return (
-          <Section id="experience" title="Experience & Education">
-            <div className="timeline">
-              <div className="timeline-item">
-                <h3>Application Security Analyst</h3>
-                <h4>Yalamanchili Solution for Payments — Vizag, India</h4>
-                <p className="timeline-date">Jul 2024 – Present</p>
-                <ul>
-                  <li>
-                    Led security assessments for 10+ client-facing web
-                    applications, identifying critical issues like SQLi, XSS and
-                    CSRF and reducing critical vulnerabilities by ~33% through
-                    collaboration with developers.
-                  </li>
-                  <li>
-                    Performed manual and automated API security testing using
-                    Burp Suite and Postman, helping resolve multiple critical
-                    vulnerabilities.
-                  </li>
-                  <li>
-                    Integrated SAST &amp; DAST security scans into CI/CD
-                    pipelines to automate vulnerability detection and
-                    remediation.
-                  </li>
-                  <li>
-                    Supported SOC operations as L1 Analyst using SIEM and
-                    strengthened endpoint protection with Bitdefender EDR.
-                  </li>
-                </ul>
-              </div>
-
-              <div className="timeline-item">
-                <h3>Cybersecurity Intern</h3>
-                <h4>Cyber Sapiens — Mangalore, India</h4>
-                <p className="timeline-date">Jul 2022 – Dec 2022</p>
-                <ul>
-                  <li>
-                    Performed web and network VAPT aligned with OWASP Top 10 and
-                    industry standards.
-                  </li>
-                  <li>
-                    Used Burp Suite, Nessus and Nmap to discover, prioritize and
-                    document vulnerabilities.
-                  </li>
-                  <li>
-                    Assisted with remediation and collaborated with threat
-                    intelligence teams to respond to emerging threats.
-                  </li>
-                  <li>
-                    Monitored and investigated security incidents using SIEM.
-                  </li>
-                </ul>
-              </div>
-
-              <div className="timeline-item">
-                <h3>Freelance Bug Bounty Hunter</h3>
-                <h4>Various Platforms</h4>
-                <p className="timeline-date">Ongoing</p>
-                <ul>
-                  <li>
-                    Reported vulnerabilities in platforms such as Exirio,
-                    MyDukaan, Chain Analysis, Tinder and Sectona.
-                  </li>
-                  <li>
-                    Participated in multiple Vulnerability Disclosure Programs
-                    (VDPs), improving platform security.
-                  </li>
-                </ul>
-              </div>
-
-              <div className="timeline-item">
-                <h3>B.Tech in Cyber Security (CGPA 7.16)</h3>
-                <h4>
-                  Kakinada Institute of Engineering &amp; Technology — Kakinada
-                </h4>
-                <p className="timeline-date">Graduated May 2024</p>
-                <ul>
-                  <li>Strong foundation in cybersecurity concepts & networks.</li>
-                </ul>
-              </div>
-            </div>
-          </Section>
-        );
-      }
-
-      function Projects() {
-        return (
-          <Section id="projects" title="Highlighted Work">
-            <div className="projects-grid">
-              <article className="project-card">
-                <h3>Password Manager with Encryption</h3>
-                <p>
-                  A secure web application for generating and storing strong
-                  passwords with an integrated strength tester and encrypted
-                  storage.
-                </p>
-                <ul className="project-details">
-                  <li>Implemented SHA-512 based encryption for storage.</li>
-                  <li>Built password strength evaluation for users.</li>
-                  <li>
-                    Used <strong>Python</strong> for application logic and{" "}
-                    <strong>MySQL</strong> for database management.
-                  </li>
-                </ul>
-                <div className="project-tags">
-                  <span>Python</span>
-                  <span>MySQL</span>
-                  <span>Web Security</span>
-                </div>
-              </article>
-
-              <article className="project-card">
-                <h3>Bug Bounty &amp; VDP Findings</h3>
-                <p>
-                  A collection of responsibly disclosed vulnerabilities from bug
-                  bounty and VDP programs, focusing on web and API security.
-                </p>
-                <ul className="project-details">
-                  <li>Improved platform security by up to ~40% through reports.</li>
-                  <li>
-                    Focus on authentication, authorization, input validation and
-                    business logic flaws.
-                  </li>
-                  <li>Consistent practice of responsible disclosure.</li>
-                </ul>
-                <div className="project-tags">
-                  <span>Bug Bounty</span>
-                  <span>OWASP Top 10</span>
-                  <span>Responsible Disclosure</span>
-                </div>
-              </article>
-            </div>
-          </Section>
-        );
-      }
-
-      function Contact() {
-        return (
-          <Section id="contact" title="Contact">
-            <div className="contact-grid">
-              <div>
-                <p>
-                  I&apos;m open to roles in{" "}
-                  <strong>Application Security, VAPT, SOC and Cybersecurity</strong>.
-                  If my profile matches what you&apos;re looking for, feel free to
-                  reach out.
-                </p>
-                <div className="contact-main">
-                  <span className="contact-label">Email</span>
-                  <a href="mailto:chanduprakashpalnati903@gmail.com">
-                    chanduprakashpalnati903@gmail.com
-                  </a>
-                </div>
-                <div className="contact-links">
-                  <a
-                    href="https://github.com/Chandu4641"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    GitHub
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/palnati-chandu"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    LinkedIn
-                  </a>
-                </div>
-              </div>
-              <div className="contact-note">
-                <p>
-                  <span>Next step:</span> Let&apos;s connect to discuss how I can
-                  help secure your applications and infrastructure.
-                </p>
-              </div>
-            </div>
-          </Section>
-        );
-      }
-
-      function Footer() {
-        return (
-          <footer className="footer">
-            <p>
-              © {new Date().getFullYear()} Palnati Chandu Prakash · Crafted with
-              React &amp; passion for security.
-            </p>
-          </footer>
-        );
-      }
-
-      function App() {
-        useEffect(() => {
-          document.title =
-            "Palnati Chandu Prakash | Cybersecurity & Application Security";
-        }, []);
-
-        return (
-          <div className="app">
-            <Navbar />
-            <main>
-              <Hero />
-              <About />
-              <Skills />
-              <Experience />
-              <Projects />
-              <Contact />
-            </main>
-            <Footer />
-          </div>
-        );
-      }
-
-      const root = ReactDOM.createRoot(document.getElementById("root"));
-      root.render(<App />);
-    </script>
-  </body>
-</html>
+              <p className="hero-meta">
+                Currently working as an Application Security Analyst at
+                Yalamanchili Solutions for
