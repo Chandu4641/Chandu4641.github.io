@@ -45,17 +45,22 @@
       function Navbar() {
         return (
           <header className="nav">
-            <div className="nav-left">
-              <div className="logo">P C P</div>
-              <span className="nav-title">Palnati Chandu Prakash</span>
+            <div className="nav-inner">
+              <div className="nav-left">
+                {/* ✅ Fixed logo: single centered 'PCP' avatar */}
+                <div className="logo">
+                  <span className="logo-text">PCP</span>
+                </div>
+                <span className="nav-title">Palnati Chandu Prakash</span>
+              </div>
+              <nav className="nav-links">
+                {sections.map((s) => (
+                  <button key={s.id} onClick={() => scrollToSection(s.id)}>
+                    {s.label}
+                  </button>
+                ))}
+              </nav>
             </div>
-            <nav className="nav-links">
-              {sections.map((s) => (
-                <button key={s.id} onClick={() => scrollToSection(s.id)}>
-                  {s.label}
-                </button>
-              ))}
-            </nav>
           </header>
         );
       }
@@ -68,7 +73,7 @@
               <p className="hero-tag">Cybersecurity • AppSec • SOC</p>
               <h1>
                 Cybersecurity Professional
-                <span> & Application Security Analyst</span>
+                <span> &amp; Application Security Analyst</span>
               </h1>
               <p className="hero-subtitle">
                 I secure web applications, APIs and endpoints by integrating
@@ -123,8 +128,8 @@
             <p className="about-text">
               I&apos;m <strong>Palnati Chandu Prakash</strong>, a Cybersecurity
               Professional and Application Security Analyst with experience in
-              <strong> Web & API security testing, DevSecOps, SOC operations</strong>
-              and <strong>Endpoint Protection</strong>. I enjoy breaking
+              <strong> Web &amp; API security testing, DevSecOps, SOC operations</strong>
+              and <strong> Endpoint Protection</strong>. I enjoy breaking
               applications ethically to help teams fix vulnerabilities before
               attackers can exploit them.
             </p>
@@ -142,13 +147,13 @@
 
       function Skills() {
         return (
-          <Section id="skills" title="Skills & Tools">
+          <Section id="skills" title="Skills &amp; Tools">
             <div className="skills-grid">
               <div className="skill-card">
                 <h3>Security Skills</h3>
                 <ul>
                   <li>Web Application VAPT</li>
-                  <li>API Security Testing (REST & SOAP)</li>
+                  <li>API Security Testing (REST &amp; SOAP)</li>
                   <li>OWASP Top 10</li>
                   <li>SOC Operations &amp; SIEM Monitoring</li>
                   <li>Endpoint Detection &amp; Response (EDR)</li>
@@ -183,7 +188,7 @@
 
       function Experience() {
         return (
-          <Section id="experience" title="Experience & Education">
+          <Section id="experience" title="Experience &amp; Education">
             <div className="timeline">
               <div className="timeline-item">
                 <h3>Application Security Analyst</h3>
@@ -259,7 +264,7 @@
                 </h4>
                 <p className="timeline-date">Graduated May 2024</p>
                 <ul>
-                  <li>Strong foundation in cybersecurity concepts & networks.</li>
+                  <li>Strong foundation in cybersecurity concepts &amp; networks.</li>
                 </ul>
               </div>
             </div>
